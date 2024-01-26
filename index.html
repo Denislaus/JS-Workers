@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Workers Example</title>
+</head>
+
+<body>
+    <h1>Web Workers Example</h1>
+    <button onclick="startWorkers()">Start Workers</button>
+    <div id="result1"></div>
+    <div id="result2"></div>
+
+    <script>
+        function startWorkers() {
+            const worker1 = new Worker('workers.js');
+            const worker2 = new Worker('workers.js');
+
+            // Listen for messages from worker1
+            worker1.onmessage = function (event) {
+                document.getElementById('result1').textContent = `Result from Worker 1: ${event.data}`;
+            };
+
+            // Listen for messages from worker2
+            worker2.onmessage = function (event) {
+                document.getElementById('result2').textContent = `Result from Worker 2: ${event.data}`;
+            };
+
+            // Start worker1 for multiplication
+            worker1.postMessage({ operation: 'multiply', operands: [5, 10] });
+
+            // Start worker2 for addition
+            worker2.postMessage({ operation: 'add', operands: [7, 3] });
+        }
+    </script>
+</body>
+
+</html>
